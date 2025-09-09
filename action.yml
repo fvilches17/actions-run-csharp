@@ -41,8 +41,8 @@ runs:
     - name: Run
       id: run
       run: |
-        cat <<EOL > Program.cs
+        cat <<EOL > program.cs
         ${{ inputs.code }}
         EOL
-        dotnet run Program.cs
+        dotnet run program.cs
       shell: bash
