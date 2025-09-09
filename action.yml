@@ -1,0 +1,48 @@
+name: Runs csharp
+description: Runs inline C# code
+author: Francisco Vilches <f_vilches17@outlook.com>
+branding:
+  icon: code
+  color: purple
+inputs:
+  setup-dotnet:
+    description: true by default. Sets up .NET SDK 10.x. Set to false if .NET 10+ is already set up.
+    required: false
+    default: 'true'
+  script:
+    description: The C# code. No csproj required. See https://devblogs.microsoft.com/dotnet/announcing-dotnet-run-app
+    required: true
+outputs:
+  script-output:
+    value: ${{ steps.run.outputs.script-output }}
+    description: |
+      Optional.  
+      The C# script input can set GitHub Action outputs by writing to the GITHUB_OUTPUT environment variable.  
+      The output can be references in subsequent steps using the syntax: ${{ steps.<step id>.outputs.script-output }}.  
+      Example:  
+      ```csharp
+      SetGitHubOutput(value: "foo");
+
+      static void SetGitHubOutput(string? value)
+      {
+        string outputFilePath = Environment.GetEnvironmentVariable("GITHUB_OUTPUT")!;
+        File.AppendAllText(outputFilePath, $"script-output={value}\n");
+      }
+      ```
+runs:
+  using: composite
+  steps:
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v5
+      if: ${{ inputs.setup-dotnet == 'true' }}
+      with:
+        dotnet-version: 10.x
+
+    - name: Run
+      id: run
+      run: |
+        cat <<EOL > Program.cs
+        ${{ inputs.code }}
+        EOL
+        dotnet run Program.cs
+      shell: bash
