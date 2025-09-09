@@ -18,7 +18,7 @@ outputs:
     description: |
       Optional.  
       The C# script input can set GitHub Action outputs by writing to the GITHUB_OUTPUT environment variable.  
-      The output can be references in subsequent steps using the syntax: ${{ steps.<step id>.outputs.script-output }}.  
+      The output can be references in subsequent steps using the syntax: \$\{\{ steps.<step id>.outputs.script-output }}.  
       Example:  
       ```csharp
       SetGitHubOutput(value: "foo");
