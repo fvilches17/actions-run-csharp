@@ -42,7 +42,7 @@ runs:
       id: run
       run: |
         cat <<EOL > program.cs
-        ${{ inputs.code }}
+        ${{ inputs.script }}
         EOL
         dotnet run program.cs
       shell: bash
